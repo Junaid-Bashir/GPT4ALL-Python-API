@@ -12,13 +12,8 @@ home_directory: str = os.path.expanduser('~')
 print("Home directory: ", home_directory)
 
 global model_path
-if os.name != 'nt':
-    model_path = "{0}/Library/Application Support/nomic.ai/GPT4All".format(home_directory)
-else:
-    model_path = "{0}/AppData/Local/nomic.ai/GPT4All".format(home_directory)
-print("Model path: ", model_path)
-default_model = os.getenv("DEFAULT_MODEL", "nous-hermes-13b.ggmlv3.q4_0")
-model_instance = GPT4All(default_model, model_path=model_path)
+default_model = "ggml-model-gpt4all-falcon-q4_0.bin"
+model_instance = GPT4All(default_model)
 
 
 def prompt_test(prompt, prompt_template):
@@ -68,7 +63,7 @@ def generate_text_by_payload(payload):
 
     if model != default_model:
         # load model if model provided in payload is different from default model
-        model_instance = GPT4All(model, model_path=model_path)
+        model_instance = GPT4All(model)
         # change the name of the default model to prevent the model from being loaded again on the next request
         default_model = model
 
@@ -122,7 +117,7 @@ def generate_text_by_payload(payload):
 
     # reloads model if reload is true
     if reload:
-        model_instance = GPT4All(model, model_path=model_path)
+        model_instance = GPT4All(model)
     prompt_template = ("\n"
                        "### Instruction\n"
                        "Paraphrase the text below by expanding the words based on the subject\n"
@@ -217,5 +212,5 @@ async def get_model(model_name):
     global model_instance
     return {
         "object": "list",
-        "data": model_instance.retrieve_model(model_name, model_path=model_path)
+        "data": model_instance.retrieve_model(model_name)
     }
