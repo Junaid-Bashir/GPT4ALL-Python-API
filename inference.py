@@ -129,7 +129,7 @@ def generate_text_by_payload(payload):
 
     instruct_prompt = "\n" + simple_format(prompt_template, prompt)
 
-    output = model_instance.generate(instruct_prompt, tokens_size=max_tokens, temp=temperature, top_p=top_p,
+    output = model_instance.generate(instruct_prompt, temp=temperature, top_p=top_p,
                                      top_k=top_k,
                                      n_batch=prompt_batch_size, repeat_penalty=repeat_penality,
                                      repeat_last_n=repeat_last_n,
